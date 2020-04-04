@@ -5,6 +5,18 @@
 #include "windyroad.h"
 #include <unistd.h>
 
+
+static int assertDimension()
+{
+   if((LINES < 30) || (COLS < 94))
+   {
+   		return 1;
+   		
+   }
+   return 0;
+}
+
+
 char * findCorresponding(int r, char * leftB, char * middleB, char * rightB)
 {
 	if(r == 1)
@@ -50,6 +62,7 @@ int main()
    clear();
    noecho();
    cbreak();
+
    keypad(stdscr,1);
 
    time_t t;
@@ -114,6 +127,14 @@ int main()
     
 	    	while(true)
 	    	{
+
+	    		if(assertDimension())
+	    		{
+	    			endwin();
+	    			puts("Your terminal needs to be 94 X 30.");
+	    			exit(1);
+	    		}
+		    	
 		    	keypad(setup, true);
 		    	char c = getch();
 

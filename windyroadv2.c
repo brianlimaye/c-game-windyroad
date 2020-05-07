@@ -5,14 +5,25 @@
 #include "windyroad.h"
 #include <unistd.h>
 
+//To-do
+//0. Use all lowercase function names rather than camelCase.
+//1. Blink the column once locked-in.
+//2. Delete cursor.
+//3 Redraw on window change.
+//4 See if I can only have one bird show at a time.
+//5 Refactor methods that are repeated.
+//6 If color is enabled, add support for color.
+//7 Study winexample.c and do #3.
+//8 Avoid having parameters of WINDOW * that are defined in main.
 
-void restoreJet(WINDOW * win, int h)
+
+void restore_jet(WINDOW * win, int h)
 {
 	
 	mvwaddstr(win, h-10, 1 ,"\n           `==\\/\\==`\n ____________\\/__\\____________\n\\/____________________________\\\n  __||__||__\\/.--.\\__||__||__\n \\/__|___|___( >< )___|___|__\\\n           _\\/`--`\\_\n          (\\/------\\)");
 }
 
-void overlayRestoredJet(char c, WINDOW * leftJet, WINDOW * middleJet, WINDOW * rightJet, WINDOW * leftChunk, WINDOW * middleChunk, WINDOW * rightChunk, WINDOW * setup)
+void overlay_restored_jet(char c, WINDOW * leftJet, WINDOW * middleJet, WINDOW * rightJet, WINDOW * leftChunk, WINDOW * middleChunk, WINDOW * rightChunk, WINDOW * setup)
 {
 	if(c == 'l')
 	{
@@ -31,7 +42,7 @@ void overlayRestoredJet(char c, WINDOW * leftJet, WINDOW * middleJet, WINDOW * r
 	}
 }
 
-void clearCorresponding(char c, WINDOW * leftChunk, WINDOW * middleChunk, WINDOW * rightChunk, WINDOW * setup)
+void clear_corresponding(char c, WINDOW * leftChunk, WINDOW * middleChunk, WINDOW * rightChunk, WINDOW * setup)
 {
 	if(c == 'l')
 	{
@@ -58,7 +69,7 @@ void clearCorresponding(char c, WINDOW * leftChunk, WINDOW * middleChunk, WINDOW
 	}
 }
 
-static int assertDimension()
+static int assert_dimension()
 {
    if((LINES < 30) || (COLS < 95))
    {
@@ -69,7 +80,7 @@ static int assertDimension()
 }
 
 
-char findCorresponding(int r)
+char find_corresponding(int r)
 {
 	if(r == 1)
 	{
@@ -88,7 +99,7 @@ char findCorresponding(int r)
 	return '\0';
 }
 
-WINDOW * findCorrespondingJet(char c, WINDOW * leftJet, WINDOW * middleJet, WINDOW * rightJet, WINDOW * setup)
+WINDOW * find_correspondingJet(char c, WINDOW * leftJet, WINDOW * middleJet, WINDOW * rightJet, WINDOW * setup)
 {
 	if(c == 'l')
 	{
@@ -192,7 +203,7 @@ int main()
    {
    		for(j=0; j< h; j++)
    		{
-   			mvwaddch(setup, j, i, ACS_VLINE | WA_PROTECT);
+   			mvwaddch(setup, j, i, ACS_VLINE);
    		}
    }
    
@@ -213,7 +224,7 @@ int main()
 	    	while(true)
 	    	{
 
-	    		if(assertDimension())
+	    		if(assert_dimension())
 	    		{
 	    			endwin();
 	    			puts("Your terminal needs to be at least 95 X 30...");
@@ -242,7 +253,7 @@ int main()
 			    			overwrite(leftChunk, setup);
 			    			wrefresh(setup);
 			    			pos = 'l';
-			    			restoreJet(middleChunk, h);
+			    			restore_jet(middleChunk, h);
 			    		}
 			    		
 
@@ -256,7 +267,7 @@ int main()
 			    			overwrite(middleChunk, setup);
 			    			wrefresh(setup);
 			    			pos = 'm';
-			    			restoreJet(rightChunk, h);
+			    			restore_jet(rightChunk, h);
 			    		}
 			    	}
 
@@ -276,7 +287,7 @@ int main()
 			    			overwrite(rightChunk, setup);
 			    			wrefresh(setup);
 			    			pos = 'r';
-			    			restoreJet(middleChunk, h);
+			    			restore_jet(middleChunk, h);
 			    		}
 
 			    		if(pos == 'l')
@@ -288,7 +299,7 @@ int main()
 			    			overwrite(middleChunk, setup);
 			    			wrefresh(setup);
 			    			pos = 'm';
-			    			restoreJet(leftChunk, h);
+			    			restore_jet(leftChunk, h);
 			    		}
 			    	}
 			    }
@@ -298,7 +309,7 @@ int main()
 		    		ran = (rand() % 3) + 1;
 		    		if(ran == 1)
 		    		{
-		    			if(findCorresponding(ran) != pos)
+		    			if(find_corresponding(ran) != pos)
 		    			{
 		    				werase(leftChunk);
 		    				wrefresh(leftChunk);
@@ -322,7 +333,7 @@ int main()
 
 		    		if(ran == 2)
 		    		{
-		    			if(findCorresponding(ran) != pos)
+		    			if(find_corresponding(ran) != pos)
 		    			{
 		    				werase(middleChunk);
 		    				wrefresh(middleChunk);
@@ -345,7 +356,7 @@ int main()
 		    		}
 		    		if(ran == 3)
 		    		{
-		    			if(findCorresponding(ran) != pos)
+		    			if(find_corresponding(ran) != pos)
 		    			{
 		    				werase(rightChunk);
 		    				wrefresh(rightChunk);
@@ -368,9 +379,9 @@ int main()
 		    		}
 
 		    		sleep(1);
-		    		clearCorresponding(pos1, leftChunk, middleChunk, rightChunk, setup);
-		    		restoreJet(findCorrespondingJet(pos1, leftJet, middleJet, rightJet, setup), h);
-		    		overlayRestoredJet(pos1, leftJet, middleJet, rightJet, leftChunk, middleChunk, rightChunk, setup);
+		    		clear_corresponding(pos1, leftChunk, middleChunk, rightChunk, setup);
+		    		restore_jet(find_correspondingJet(pos1, leftJet, middleJet, rightJet, setup), h);
+		    		overlay_restored_jet(pos1, leftJet, middleJet, rightJet, leftChunk, middleChunk, rightChunk, setup);
 		    		
 	    			if(pos1 == pos)
 	    			{

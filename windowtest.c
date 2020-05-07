@@ -18,12 +18,12 @@ int main()
    int l;
    int h;
    int i, j;
-   int score;
-   char c;
-   int ran = 1;
-   int increment = 0;
-   char pos = 'm';
-   char * result;
+   //int score;
+   //char c;
+   //int ran = 1;
+   //int increment = 0;
+   //char pos = 'm';
+   //char * result;
 
    getmaxyx(stdscr, h, l);
   
@@ -56,10 +56,10 @@ int main()
 
 
 
-   WINDOW * leftjet = newwin(10, (int)(l /3), h-10, 0);
+   WINDOW * leftjet = newwin(10, l /3, h-10, 0);
    //WINDOW * jetarea = newwin(10, ((COLS / 3) - 2), COLS - 10, 1);
 
-   waddstr(leftjet, "\n           `==\\/\\==`\n ____________\\/__\\____________\n\\/____________________________\\\n  __||__||__\\/.--.\\__||__||__\n \\/__|___|___( >< )___|___|__\\\n           _\\/`--`\\_\n          (\\/------\\)");
+   //waddstr(leftjet, "\n           `==\\/\\==`\n ____________\\/__\\____________\n\\/____________________________\\\n  __||__||__\\/.--.\\__||__||__\n \\/__|___|___( >< )___|___|__\\\n           _\\/`--`\\_\n          (\\/------\\)");
    overlay(leftjet, startup);
    wrefresh(startup);
    //wrefresh(startup);

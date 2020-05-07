@@ -1,10 +1,4 @@
-struct box
-{
-	int xpos;
-	int ypos;
-	char * boxpic;
-};                             
-
+                  
 struct bat					 
 {
 	int xpos;
@@ -14,9 +8,7 @@ struct bat
 
 struct jet
 {
-	int xflat;
-	int yflat;
-	char * jetpic;
+
 };
 
 
